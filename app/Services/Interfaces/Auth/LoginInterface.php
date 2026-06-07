@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Services\Interfaces\Auth;
 
+use App\Models\User;
 
 interface LoginInterface
 {
-    // Define method signatures for login-related operations
+    public function login(array $credentials): User;
+    
+    public function logout(): void;
 }

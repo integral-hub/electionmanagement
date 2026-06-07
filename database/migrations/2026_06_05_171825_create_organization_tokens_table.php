@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('organization_tokens', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('organization_id')->nullable();
+            $table->string('name');
             $table->string('token')->unique();
             $table->boolean('is_used')->default(false);
             $table->unsignedInteger('max_elections')->default(1);

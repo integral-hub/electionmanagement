@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\Election;
+use App\Models\Voter;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -20,7 +21,7 @@ class VoterCreated extends Notification
         return ['mail']; // can add sms later
     }
 
-    public function toMail($notifiable): MailMessage
+    public function toMail(Voter $notifiable): MailMessage
     {
         $token = encrypt([
             'voter_id' => $notifiable->id,

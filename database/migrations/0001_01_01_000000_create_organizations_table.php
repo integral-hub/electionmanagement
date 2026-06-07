@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('logo')->nullable();
             $table->string('website')->nullable();
-            $table->string('access_token')->nullable();
+            $table->string('package_type')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
         });

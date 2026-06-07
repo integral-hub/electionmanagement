@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('voter_id')->constrained('voters')->cascadeOnDelete();
             $table->string('field_name', 191);
-            $table->string('value')->unique();
+            $table->string('value');
             $table->timestamps();
         });
     }

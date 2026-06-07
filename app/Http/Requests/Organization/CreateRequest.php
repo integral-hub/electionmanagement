@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Organization;
 
 use App\Http\Requests\User\CreateRequest as UserCreateRequest;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class CreateRequest extends UserCreateRequest
@@ -35,10 +36,12 @@ class CreateRequest extends UserCreateRequest
      */
     public function payload(): array
     {
+        $token = DB::table('organization_tokens')->where('token', $this->access_token)->first();
+
         return [
             'organization' => [
                 'name' => $this->org_name,
-                'access_token' => $this->access_token
+                'package_type' => $token?->name,
             ],
 
             'user' => [

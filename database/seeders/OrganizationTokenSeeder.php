@@ -12,32 +12,30 @@ class OrganizationTokenSeeder extends Seeder
         $now = now();
 
         $tokens = [
-            // Starter (1 election)
-            ['token' => 'STARTER-001', 'max_elections' => 1],
-            ['token' => 'STARTER-002', 'max_elections' => 1],
-            ['token' => 'STARTER-003', 'max_elections' => 1],
-            ['token' => 'STARTER-004', 'max_elections' => 1],
-            ['token' => 'STARTER-005', 'max_elections' => 1],
+            ['name' => 'STARTER', 'token' => 'STARTER-TOKEN-001', 'max_elections' => 1],
+            ['name' => 'STARTER', 'token' => 'STARTER-TOKEN-002', 'max_elections' => 1],
+            ['name' => 'STARTER', 'token' => 'STARTER-TOKEN-003', 'max_elections' => 1],
+            ['name' => 'STARTER', 'token' => 'STARTER-TOKEN-004', 'max_elections' => 1],
+            ['name' => 'STARTER', 'token' => 'STARTER-TOKEN-005', 'max_elections' => 1],
 
-            // Pro (2 elections)
-            ['token' => 'PRO-001', 'max_elections' => 2],
-            ['token' => 'PRO-002', 'max_elections' => 2],
-            ['token' => 'PRO-003', 'max_elections' => 2],
-            ['token' => 'PRO-004', 'max_elections' => 2],
-            ['token' => 'PRO-005', 'max_elections' => 2],
+            ['name' => 'PRO', 'token' => 'PRO-TOKEN-001', 'max_elections' => 2],
+            ['name' => 'PRO', 'token' => 'PRO-TOKEN-002', 'max_elections' => 2],
+            ['name' => 'PRO', 'token' => 'PRO-TOKEN-003', 'max_elections' => 2],
+            ['name' => 'PRO', 'token' => 'PRO-TOKEN-004', 'max_elections' => 2],
+            ['name' => 'PRO', 'token' => 'PRO-TOKEN-005', 'max_elections' => 2],
 
-            // Enterprise (3 elections)
-            ['token' => 'ENTERPRISE-001', 'max_elections' => 3],
-            ['token' => 'ENTERPRISE-002', 'max_elections' => 3],
-            ['token' => 'ENTERPRISE-003', 'max_elections' => 3],
-            ['token' => 'ENTERPRISE-004', 'max_elections' => 3],
-            ['token' => 'ENTERPRISE-005', 'max_elections' => 3],
-        ];
+            ['name' => 'ENTERPRISE', 'token' => 'ENT-TOKEN-001', 'max_elections' => 3],
+            ['name' => 'ENTERPRISE', 'token' => 'ENT-TOKEN-002', 'max_elections' => 3],
+            ['name' => 'ENTERPRISE', 'token' => 'ENT-TOKEN-003', 'max_elections' => 3],
+            ['name' => 'ENTERPRISE', 'token' => 'ENT-TOKEN-004', 'max_elections' => 3],
+            ['name' => 'ENTERPRISE', 'token' => 'ENT-TOKEN-005', 'max_elections' => 3],
+];
 
         $tokens = array_map(function ($token) use ($now) {
             return [
                 'organization_id' => null,
-                'token' => $token['token'],
+                'name' => $token['name'],
+                'token' => $token['token'], // or 'token' => strtoupper(bin2hex(random_bytes(16))),
                 'is_used' => false,
                 'max_elections' => $token['max_elections'],
                 'created_at' => $now,
