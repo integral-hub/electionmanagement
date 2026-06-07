@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Http\Requests\Election;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class AssignVoterRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return false;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     */
+    public function rules(): array
+    {
+        return [
+            'voter_ids' => ['required', 'array'],
+            'voter_ids.*' => ['exists:voters,id'],
+        ];
+    }
+}
