@@ -29,9 +29,8 @@ class LoginService implements LoginInterface
             ]);
         }
 
-        if (! Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password'],])) 
+        if (! Auth::attempt($credentials))
         {
-
             throw ValidationException::withMessages([
                 'email' => 'Invalid credentials.',
             ]);
