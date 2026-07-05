@@ -56,8 +56,8 @@ enum PermissionEnum: string
 
     // Voting
     case VIEW_VOTES = 'view.votes';
-    case RESET_VOTES = 'reset.votes';
-    case RESTORE_VOTES = 'restore.votes';
+   // case RESET_VOTES = 'reset.votes';
+   // case RESTORE_VOTES = 'restore.votes';
     
   //  case EXPORT_RESULTS = 'export.results';
 
@@ -126,8 +126,8 @@ enum PermissionEnum: string
                 self::APPROVE_VOTERS,
                 self::REJECT_VOTERS,
                 self::VIEW_VOTES,
-                self::RESET_VOTES,
-                self::RESTORE_VOTES,
+               // self::RESET_VOTES,
+                //  self::RESTORE_VOTES,
                 //  self::EXPORT_RESULTS,
                 self::VIEW_ELECTION_SETTINGS,
                 self::UPDATE_ELECTION_SETTINGS,

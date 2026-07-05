@@ -1,58 +1,76 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Election Management Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A multi-tenant Laravel application for organizations to run digital elections end to end: creating elections, managing positions and candidates, registering or importing voters, collecting ballots, and publishing results with role-based staff access and an audit trail.
 
-## About Laravel
+## Overview
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+The platform serves two distinct types of users:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Admin / Staff** — sign in at the main app URL, belong to an **Organization**, and manage one or more elections from a dashboard (create elections, configure settings, manage positions/candidates, manage voters, view results, manage staff/roles, view audit logs).
+- **Voters** — access a dedicated portal at a per-election URL (e.g. `/e/{election-slug}`), register or log in, optionally verify their email and/or complete two-factor authentication, then cast a ballot.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Each organization's staff, roles, and data are isolated from other organizations (multi-tenancy via a `team_id`-scoped permission system).
 
-## Learning Laravel
+## Tech Stack
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+| Layer | Technology |
+|---|---|
+| Framework | Laravel 13, PHP 8.4 |
+| Auth / Permissions | Laravel's built-in auth (staff) + a custom `voter` guard (voters), Spatie Laravel Permission (team-scoped roles/permissions) |
+| Business logic | `lorisleiva/laravel-actions` (single-purpose Action classes) |
+| File storage | Cloudinary (`cloudinary/cloudinary_php`) |
+| Spreadsheet import/export | `maatwebsite/excel` |
+| OTP (email verification / 2FA) | `tzsk/otp` |
+| Audit logging | `spatie/laravel-activitylog` |
+| Frontend build | Vite, Tailwind CSS |
+| Database (default/local) | MySQL/Postgres |
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Requirements
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- PHP 8.4+
+- Composer
+- Node.js + npm
+- A database (MySQL/Postgres supported)
+- A Cloudinary account (for file uploads — candidate photos, voter document uploads)
 
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Installation
 
 ```bash
-composer require laravel/boost --dev
+composer install
+npm install
 
-php artisan boost:install
+cp .env.example .env
+php artisan key:generate
+
+
+php artisan migrate --seed
+
+npm run build     # or: npm run dev
+php artisan serve
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## Configuration (.env)
 
-## Contributing
+The default `.env.example` only ships the standard Laravel keys. The following must be added manually for this project's features to work:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```env
+# Cloudinary — required for all file uploads (candidate photos, voter documents)
+CLOUDINARY_URL=cloudinary://<api_key>:<api_secret>@<cloud_name>
 
-## Code of Conduct
+# Default system administrator (used by the initial seeder)
+SYSTEM_ADMIN_NAME="System Admin"
+SYSTEM_ADMIN_EMAIL=admin@system.com
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Other configuration of note (all under `config/`):
 
-## Security Vulnerabilities
+- `config/otp.php` — OTP code length (`digits`, default 6) and expiry in minutes (`expiry`, default 5). Used for voter email verification and 2FA.
+- `config/activitylog.php` — audit log retention/behaviour (Spatie Activitylog).
+- `config/excel.php` — Laravel Excel (import/export) configuration.
+- Mail (`MAIL_*`) — required for OTP codes, verification links, and staff/voter notification emails to actually deliver (defaults to the `log` driver, which writes emails to the log file instead of sending them).
+- Queue (`QUEUE_CONNECTION`): defaults to `database`. Notifications (import summaries, account-created emails, etc.) are queued, so run a worker in non-local environments:
+  ```bash
+  php artisan queue:work
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+  ```
+### Configure Cron (Production)
