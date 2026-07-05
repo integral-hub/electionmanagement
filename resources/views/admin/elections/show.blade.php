@@ -4,7 +4,7 @@
 @section('topbar-actions')
     <a href="{{ route('admin.elections.index') }}" class="btn btn-secondary btn-sm">← Elections</a>
     @can('update', $election)<a href="{{ route('admin.elections.edit', $election) }}" class="btn btn-secondary btn-sm">Edit</a>@endcan
-   @can('update', $election->setting ?? $election) <a href="{{ route('admin.elections.settings', $election) }}" class="btn btn-secondary btn-sm">Settings</a> @endcan
+   @can('view', $election->setting ?? $election) <a href="{{ route('admin.elections.settings', $election) }}" class="btn btn-secondary btn-sm">Settings</a> @endcan
 @endsection
 
 @section('content')
@@ -167,7 +167,7 @@
                     </span>
 
                 @elseif(! empty($item['route']))
-                  @can('update.election_settings') <a href="{{ $item['route'] }}" class="btn btn-primary btn-sm">
+                  @can('view.election_settings') <a href="{{ $item['route'] }}" class="btn btn-primary btn-sm">
                         {{ $item['action'] }}
                     </a>
                   @endcan
@@ -234,6 +234,7 @@
             <div class="card-title">Positions</div>
           @can('create.positions')  <a href="{{ route('admin.elections.positions.create', $election) }}" class="btn btn-primary btn-sm">+ Add Position</a> @endcan
         </div>
+    @can('view.positions')
         @if($election->positions->isEmpty())
             <div class="empty-state">
                 <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
@@ -255,7 +256,8 @@
                           @can('update', $position)  <a href="{{ route('admin.elections.positions.edit', [$election, $position]) }}" class="btn btn-secondary btn-sm">Edit</a> @endcan
                           @can('delete', $position)
                             <form action="{{ route('admin.elections.positions.destroy', [$election, $position]) }}" method="POST">
-                                @csrf @method('DELETE')
+                                @csrf 
+                                @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Delete position?')">Remove</button>
                             </form>
                           @endcan
@@ -267,6 +269,9 @@
             </table>
         </div>
         @endif
+    @else
+        <div style="text-align:center;color:var(--ink-3);padding:20px;font-style:italic;">Loading positions...</div>
+    @endcan
     </div>
 </div>
 
@@ -282,6 +287,7 @@
             @endif
         </div>
         @php $allCandidates = $election->positions->flatMap(fn($p) => $p->candidates->map(fn($c) => ['candidate'=>$c,'position'=>$p])); @endphp
+    @can('view.candidates')
         @if($allCandidates->isEmpty())
             <div class="empty-state">
                 <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
@@ -305,7 +311,8 @@
                     @can('update', $c)  <a href="{{ route('admin.elections.candidates.edit', [$election, $c]) }}" class="btn btn-secondary btn-sm" style="padding:4px 10px;font-size:12px;">Edit</a> @endcan
                     @can('delete', $c) 
                         <form action="{{ route('admin.elections.candidates.destroy', [$election, $c]) }}" method="POST">
-                            @csrf @method('DELETE')
+                            @csrf 
+                            @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm" style="padding:4px 10px;font-size:12px;" onclick="return confirm('Remove candidate?')">Remove</button>
                         </form> 
                     @endcan
@@ -315,6 +322,9 @@
             @endforeach
         </div>
         @endif
+    @else
+        <div style="text-align:center;color:var(--ink-3);padding:20px;font-style:italic;" class="empty-title">Loading candidates...</div>
+    @endcan
     </div>
 </div>
 
@@ -347,7 +357,7 @@
     <div class="card">
         <div class="card-header">
             <div class="card-title">Voter Registration Form</div>
-          @can('update', $election->setting ?? $election)  <a href="{{ route('admin.elections.registration.show', $election) }}" class="btn btn-primary btn-sm">Form Builder</a> @endcan
+          @can('view', $election->setting ?? $election)  <a href="{{ route('admin.elections.registration.show', $election) }}" class="btn btn-primary btn-sm">Form Builder</a> @endcan
         </div>
         @if($election->registrationField)
             <div class="alert alert-success" style="margin-bottom:0;">

@@ -50,7 +50,7 @@ Route::middleware('guest')->group(function () {
 
 // Voter Portal 
 Route::prefix('e/{election:slug}')->name('voter.')->group(function () {
-//Route::middleware('portal.ready')->group(function () {
+Route::middleware('portal.ready')->group(function () {
     // Unauthenticated voter pages
     Route::middleware('voter.guest')->group(function () {
         Route::get('/', [VoterAuthController::class, 'showLogin'])->name('login');
@@ -85,7 +85,7 @@ Route::prefix('e/{election:slug}')->name('voter.')->group(function () {
         Route::get('/profile/password/view', [VoterAuthController::class, 'editPassword'])->name('password.form');
         Route::put('/profile/change/password/now', [VoterAuthController::class, 'updatePassword'])->name('password.change');
     });
-//});
+});
 });
 
 //  Admin Panel 

@@ -43,16 +43,21 @@
             </button>
 
             <div style="display:flex;gap:10px;border-top:1px solid var(--border);padding-top:16px;">
+                @canany(['create','update'], $election->setting ?? $election)
                 <button type="submit" class="btn btn-primary">
                     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16" height="16"><path d="M5 13l4 4L19 7"/></svg>
                     {{ $form ? 'Update Form' : 'Save Form' }}
                 </button>
+                @endcanany
         </form>
                 @if($form)
+                 @can('delete', $election->setting ?? $election)
                 <form action="{{ route('admin.elections.registration.destroy', $election) }}" method="POST">
-                    @csrf @method('DELETE')
+                    @csrf 
+                    @method('DELETE')
                     <button type="submit" class="btn btn-danger" onclick="return confirm('Delete registration form?')">Delete Form</button>
                 </form>
+                @endcan
                 @endif
             </div>
         </div>

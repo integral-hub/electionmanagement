@@ -176,8 +176,10 @@
             </div>
 
             <div style="display:flex;gap:10px;padding-top:8px;border-top:1px solid var(--border);">
+               @can('update', $election->setting ?? $election)  
                 <button type="submit" class="btn btn-primary">Save Settings</button>
                 <a href="{{ route('admin.elections.show', $election) }}" class="btn btn-secondary">Cancel</a>
+               @endcan
             </div>
         </form>
     </div>

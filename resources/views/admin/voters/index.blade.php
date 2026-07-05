@@ -7,6 +7,9 @@
 
 @section('topbar-actions')
     <a href="{{ route('admin.elections.show', $election) }}" class="btn btn-secondary btn-sm">← Election</a>
+    @can('viewImport', \App\Models\Voter::class)
+    <a href="{{ route('admin.elections.voters.import-logs.log', $election) }}" class="btn btn-primary btn-sm">View Import Logs</a>
+    @endcan
     @can('assign.voters')
     <a href="{{ route('admin.elections.voters.assign.view', $election) }}" class="btn btn-primary btn-sm">+ Assign Voter</a>
     @endcan

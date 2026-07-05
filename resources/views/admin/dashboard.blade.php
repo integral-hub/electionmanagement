@@ -68,15 +68,17 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @can('view.elections')
                         @foreach($recentElections as $election)
                         <tr>
-                           @can('view.elections') <td><a href="{{ route('admin.elections.show', $election) }}" style="font-weight:500;color:var(--ink);text-decoration:none;">{{ $election->name }}</a></td> @endcan
+                            <td><a href="{{ route('admin.elections.show', $election) }}" style="font-weight:500;color:var(--ink);text-decoration:none;">{{ $election->name }}</a></td>
                             <td><span class="badge badge-{{ $election->status }}"><span class="badge-dot"></span>{{ ucfirst($election->status) }}</span></td>
                             <td>{{ $election->voters->count() ?? '—' }}</td>
                             <td style="color:var(--ink-3);font-size:13px;">{{ $election->created_at->format('M j, Y') }}</td>
-                           @can('view.elections') <td><a href="{{ route('admin.elections.show', $election) }}" class="btn btn-secondary btn-sm">Manage</a></td> @endcan
+                            <td><a href="{{ route('admin.elections.show', $election) }}" class="btn btn-secondary btn-sm">Manage</a></td>
                         </tr>
                         @endforeach
+                        @endcan
                     </tbody>
                 </table>
             </div>
@@ -89,6 +91,7 @@
             <div class="card-title">Recent Activity</div>
            @can('view.audit_logs') <a href="{{ route('admin.audit-logs') }}" class="btn btn-secondary btn-sm">All</a> @endcan
         </div>
+        @can('view.audit_logs') 
         <div style="display:flex;flex-direction:column;gap:12px;">
             @forelse($recentLogs as $log)
             <div style="display:flex;gap:10px;align-items:flex-start;">
@@ -102,6 +105,7 @@
             <div style="font-size:13px;color:var(--ink-3);text-align:center;padding:20px 0;">No activity yet.</div>
             @endforelse
         </div>
+        @endcan
     </div>
 </div>
 @endsection
