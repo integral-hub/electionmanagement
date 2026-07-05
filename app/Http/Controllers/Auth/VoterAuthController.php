@@ -52,13 +52,20 @@ class VoterAuthController extends Controller
     {
         $loginFields = $this->normalizeLoginFields($election, true);
         $election->load('setting');
-
-        return view('voter.login', compact('election', 'loginFields'));
+        $can = $election->can_vote;
+        
+        return !$can->allowed
+            ? redirect()->route('voter.not-ready', $election)
+            : view('voter.login', compact('election', 'loginFields'));
     }
 
     // Handle login (step 1)
     public function login(VoterLoginRequest $request, Election $election, LoginVoterAction $loginVoterAction): RedirectResponse
     {
+        if (! $election->can_vote->allowed) {
+            return redirect()->route('voter.not-ready', $election);
+        }
+
         /** @var Voter $voter */
         $voter = $request->attributes->get('authorized_voter');
 
@@ -190,7 +197,7 @@ class VoterAuthController extends Controller
     // Portal guard for the two registration endpoints
     private function guardPortalNotReady(Election $election): ?RedirectResponse
     {
-        if ($election->is_portal_ready) {
+        if ($election->is_registration_open) {
             return null;
         }
 

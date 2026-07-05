@@ -22,10 +22,6 @@ class EnsureVotingPortalReady
             return redirect()->route('voter.not-ready', $election);
         }
 
-        if ($election && !$election->can_vote->allowed) {
-            return redirect()->route('voter.not-ready', $election);
-        }
-
         return $next($request);
     }
 }
