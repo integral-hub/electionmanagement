@@ -1,0 +1,11 @@
+<?php
+declare(strict_types=1);
+namespace App\Services\Interfaces\Auth;
+use App\Models\Election;
+use App\Models\Voter;
+
+interface VoterAuthInterface
+{
+    public function login(Election $election, array $credentials, Voter $voter): array;
+    public function logout(): void;
+}

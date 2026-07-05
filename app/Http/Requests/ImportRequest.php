@@ -6,19 +6,15 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class ImportRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     public function rules(): array
     {
         return [
-            'file' => ['required', 'file', 'mimes:csv,xlsx,xls', 'max:10240'], // 10MB
-            'batch_code' => ['nullable', 'string', 'max:255'],
+            'file' => ['required', 'file', 'mimes:csv,xlsx,xls', 'max:10240'],
         ];
     }
 
@@ -26,8 +22,8 @@ class ImportRequest extends FormRequest
     {
         return [
             'file.required' => 'Please upload a voter file.',
-            'file.mimes' => 'Only CSV, XLSX, and XLS files are allowed.',
-            'file.max' => 'The uploaded file must not exceed 10MB.',
+            'file.mimes'    => 'Only CSV, XLSX, and XLS files are allowed.',
+            'file.max'      => 'The uploaded file must not exceed 10MB.',
         ];
     }
 }

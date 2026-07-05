@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
+use App\Enums\CandidateStatusEnum;
+use App\Models\Concerns\Traits\Auditable;
 use App\Models\Concerns\Traits\HasFormattedName;
 use App\Models\Concerns\Traits\HasUuid;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Candidate extends Model
 {
-    use HasFactory, HasUuid, HasFormattedName;
+    use HasFactory, HasUuid, HasFormattedName, Auditable;
 
     protected $fillable = [
         'uuid',
@@ -22,6 +25,9 @@ class Candidate extends Model
         'status',
     ];
 
+    protected $casts = [
+        'photo' => 'array',
+    ];
     // Relationships
 
     public function election()
@@ -38,4 +44,10 @@ class Candidate extends Model
     {
         return $this->hasMany(Vote::class);
     }
+
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('status', CandidateStatusEnum::Active->value);
+    }
+
 }

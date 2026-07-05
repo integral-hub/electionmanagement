@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\Traits\Auditable;
 use App\Models\Concerns\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ElectionSetting extends Model
 {
-    use HasFactory, HasUuid;
+    use HasFactory, HasUuid, Auditable;
 
     protected $fillable = [
         'uuid',
@@ -35,11 +36,8 @@ class ElectionSetting extends Model
     ];
 
     protected $attributes = [
-        'voters_verification_requirement' => [
-            'email' => true,
-            'phone' => false,
-            'image_compare' => false
-        ],
+        'voters_verification_requirement' => 
+                '{"email":true}',
     ];
 
     public function election()

@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\Traits\Auditable;
 use App\Models\Concerns\Traits\HasSlug;
 use App\Models\Concerns\Traits\HasFormattedName;
 use App\Models\Concerns\Traits\HasUuid;
+use App\Traits\VoteEligibility;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Election extends Model
 {
-    use HasFactory, HasUuid, HasFormattedName, HasSlug;
+    use HasFactory, HasUuid, HasFormattedName, HasSlug, Auditable, VoteEligibility;
 
     protected $fillable = [
         'uuid',
@@ -21,6 +23,24 @@ class Election extends Model
         'status',
         'created_by',
     ];
+    protected $appends = [
+        'is_portal_ready',
+        'is_registration_open',
+    ];
+
+    public function getIsPortalReadyAttribute(): bool
+    {
+        return $this->portalReady($this);
+    }
+
+    public function getIsRegistrationOpenAttribute(): bool
+    {
+        return $this->registrationOpen($this);
+    }
+    public function getCanVoteAttribute()
+    {
+        return $this->canVote($this);
+    }
 
     // Relationships
 
@@ -30,7 +50,7 @@ class Election extends Model
     }
     public function registrationField()
     {
-        return $this->belongsTo(RegistrationField::class);
+        return $this->hasOne(RegistrationField::class);
     }
     
     public function creator()
@@ -50,14 +70,9 @@ class Election extends Model
 
     public function voters()
     {
-        return $this->hasManyThrough(
-                Voter::class,
-                ElectionVoter::class,
-                    'election_id', 
-                    'id',          
-                    'id',          
-                    'voter_id'     
-        );
+        return $this->belongsToMany(Voter::class, 'election_voters')
+            ->using(\App\Models\ElectionVoter::class)
+            ->withPivot('status', 'validated_by', 'validated_at');
     }
 
     public function setting()

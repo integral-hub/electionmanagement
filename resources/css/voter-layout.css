@@ -1,0 +1,68 @@
+/*
+ * Voter layout styles.
+ */
+
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-light: #eff6ff;
+    --success: #059669;
+    --surface: #f8fafc;
+    --border: #e2e8f0;
+    --ink: #0f172a;
+    --ink-2: #475569;
+    --ink-3: #94a3b8;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: var(--surface); color: var(--ink); min-height: 100vh; }
+
+.voter-header { background: #fff; border-bottom: 1px solid var(--border); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+.voter-brand { display: flex; align-items: center; gap: 10px; }
+.voter-brand-mark { width: 34px; height: 34px; background: var(--primary); border-radius: 8px; display: grid; place-items: center; }
+.voter-brand-mark svg { width: 18px; height: 18px; fill: #fff; }
+.election-name { font-size: 14px; font-weight: 600; color: var(--ink); }
+.election-status { font-size: 11px; color: var(--ink-3); }
+
+.voter-container { max-width: 520px; margin: 0 auto; padding: 32px 16px; }
+
+.voter-actions { display: flex; align-items: center; gap: 12px; }
+.voter-change-password { font-size: 13px; color: var(--primary); text-decoration: none; }
+.voter-signout { background: none; border: none; cursor: pointer; font-size: 13px; color: var(--ink-3); font-family: inherit; }
+
+/* Card */
+.v-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 1px 4px rgba(0,0,0,.04); }
+
+/* Form */
+.v-form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
+.v-label { font-size: 13px; font-weight: 600; color: var(--ink); }
+.v-hint { font-size: 12px; color: var(--ink-3); }
+.v-input, .v-select, .v-textarea { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 15px; font-family: inherit; color: var(--ink); background: #fff; outline: none; transition: border .15s; }
+.v-input:focus, .v-select:focus, .v-textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+.v-error { font-size: 12px; color: #dc2626; }
+
+/* Buttons */
+.v-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 9px 17px; border-radius: 8px; font-size: 12px; font-weight: 400; cursor: pointer; border: none; text-decoration: none; transition: all .15s; font-family: inherit; width: 100%; }
+.v-btn-primary { background: var(--primary); color: #fff; }
+.v-btn-primary:hover { background: var(--primary-dark); }
+.v-btn-secondary { background: var(--surface); color: var(--ink); border: 1.5px solid var(--border); }
+.v-btn-secondary:hover { background: var(--border); }
+
+/* Alert */
+.v-alert { padding: 12px 16px; border-radius: 10px; font-size: 14px; margin-bottom: 20px; }
+.v-alert-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+.v-alert-error { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+.v-alert-info { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+
+/* Divider */
+.v-divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; color: var(--ink-3); font-size: 13px; }
+.v-divider::before, .v-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* Shared auth-page header/footer (login, reset/forgot password, 2FA, verify-email) */
+.auth-icon-wrap { text-align: center; margin-bottom: 28px; }
+.auth-icon { width: 56px; height: 56px; background: var(--primary-light); border-radius: 16px; display: grid; place-items: center; margin: 0 auto 16px; }
+.auth-icon.is-success { background: #f0fdf4; }
+.auth-title { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+.auth-subtitle { font-size: 14px; color: var(--ink-3); }
+.auth-footer { text-align: center; margin-top: 20px; font-size: 12px; color: var(--ink-3); }
+.auth-back-link { font-size: 12px; color: var(--primary); text-decoration: none; }
+.required-mark { color: #dc2626; }

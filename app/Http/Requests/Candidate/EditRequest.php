@@ -8,7 +8,7 @@ class EditRequest extends CreateRequest
     {
         $rules = parent::rules();
 
-        $rules['position_id'] = ['nullable', 'integer', 'exists:positions,id'];
+        $rules['position_id'] = ['sometimes', 'integer', 'exists:positions,id'];
         $rules['name'] = ['sometimes', 'string', 'max:255'];
 
         return $rules;

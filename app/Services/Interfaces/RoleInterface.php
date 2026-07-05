@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Services\Interfaces;
 
-use Spatie\Permission\Models\Role;
+use App\Models\Role;
 
 interface RoleInterface
 {
     public function create(array $data): Role;
     public function update(Role $role, array $data): Role;
     public function delete(Role $role): array|bool;
+    public function getRoles($index = false);
 }

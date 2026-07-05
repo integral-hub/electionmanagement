@@ -7,8 +7,8 @@ namespace Database\Seeders;
 use App\Enums\PermissionEnum;
 use App\Enums\RoleEnum;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
+use App\Models\Role;
+use App\Models\Permission;
 use Spatie\Permission\PermissionRegistrar;
 
 class RolesAndPermissionsSeeder extends Seeder
@@ -26,12 +26,10 @@ class RolesAndPermissionsSeeder extends Seeder
         }
 
         // Roles seeding
-        foreach (RoleEnum::cases() as $role) {
             Role::firstOrCreate([
-                'name' => $role->value,
+                'name' => RoleEnum::System_Admin->value,
                 'guard_name' => 'web',
             ]);
-        }
 
         // Fetch System Admin and set permissions
         $systemAdmin = Role::findByName(
@@ -42,15 +40,5 @@ class RolesAndPermissionsSeeder extends Seeder
             Permission::all()
         );
 
-        // Fetch Admin and set permissions
-        $admin = Role::findByName(
-            RoleEnum::Admin->value
-        );
-
-        $admin->syncPermissions(
-            collect(PermissionEnum::getPermissionFor(RoleEnum::Admin))
-                ->map(fn ($permission) => $permission->value)
-                ->toArray()
-        );
     }
 }

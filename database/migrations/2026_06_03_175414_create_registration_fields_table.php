@@ -27,7 +27,7 @@ return new class extends Migration
             "sort_order": "ordering integer (optional)",
             optional: "description": "human-readable note about the field"
          } */
-            $table->json('fields')->nullable();
+            $table->json('fields');
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->softDeletes();

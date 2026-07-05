@@ -11,7 +11,7 @@ class CreateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -28,9 +28,25 @@ class CreateRequest extends FormRequest
             'fields.*.field_type' => ['required', 'string', 'in:text,textarea,select,checkbox,radio,date,file'],
             'fields.*.required' => ['required', 'boolean'],
             'fields.*.unique_field' => ['required', 'boolean'],
-            'fields.*.is_hash' => ['required', 'boolean'],
+            'fields.*.max_input' => ['nullable', 'integer', 'min:1', 'max:255'],
             'fields.*.options' => ['nullable', 'array'],
             'fields.*.sort_order' => ['nullable', 'integer'],
         ];
+    }
+    protected function prepareForValidation(): void
+    {
+        $fields = $this->input('fields', []);
+
+        foreach ($fields as &$field) {
+            if (!empty($field['options']) && is_string($field['options'])) {
+                $field['options'] = array_filter(
+                    array_map('trim', explode(',', $field['options']))
+                );
+            }
+        }
+
+        $this->merge([
+            'fields' => $fields,
+        ]);
     }
 }

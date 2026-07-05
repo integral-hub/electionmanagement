@@ -6,22 +6,25 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class AssignVoterRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     */
     public function rules(): array
     {
         return [
-            'voter_ids' => ['required', 'array'],
-            'voter_ids.*' => ['exists:voters,id'],
+            'voters'   => ['required', 'array', 'min:1'],
+            'voters.*' => ['exists:voters,id'],
+            'validate' => ['nullable', 'boolean'], // checkbox validate
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'voters.required' => 'Select at least one voter to assign.',
+            'voters.min'      => 'Select at least one voter to assign.',
         ];
     }
 }

@@ -41,18 +41,13 @@ enum PermissionEnum: string
     case UPDATE_CANDIDATES = 'update.candidates';
     case DELETE_CANDIDATES = 'delete.candidates';
 
-    // Registration Form Fields
-    case VIEW_REGISTRATION_FIELDS = 'view.registration_fields';
-    case CREATE_REGISTRATION_FIELDS = 'create.registration_fields';
-    case UPDATE_REGISTRATION_FIELDS = 'update.registration_fields';
-    case DELETE_REGISTRATION_FIELDS = 'delete.registration_fields';
-
     // Voters
     case VIEW_VOTERS = 'view.voters';
     case IMPORT_VOTERS = 'import.voters';
     case UPDATE_VOTERS = 'update.voters';
     case DELETE_VOTERS = 'delete.voters';
-    case EXPORT_VOTERS = 'export.voters';
+    case ASSIGN_VOTERS = 'assign.voters';
+   // case EXPORT_VOTERS = 'export.voters';
     case VIEW_IMPORT_LOGS = 'view.import_logs';
 
     // Voter Validation
@@ -62,7 +57,9 @@ enum PermissionEnum: string
     // Voting
     case VIEW_VOTES = 'view.votes';
     case RESET_VOTES = 'reset.votes';
-    case EXPORT_RESULTS = 'export.results';
+    case RESTORE_VOTES = 'restore.votes';
+    
+  //  case EXPORT_RESULTS = 'export.results';
 
     // Election Settings
     case VIEW_ELECTION_SETTINGS = 'view.election_settings';
@@ -71,9 +68,26 @@ enum PermissionEnum: string
     // Audit Logs
     case VIEW_AUDIT_LOGS = 'view.audit_logs';
 
-    public static function values(): array
+    public static function values(bool $isRequest = false): array
     {
-        return array_column(self::cases(), 'value');
+        $excluded = [
+            self::DELETE_ORGANIZATION,
+            // add more exclusions here
+        ];
+
+        $filtered = array_filter(
+            self::cases(),
+            fn ($case) => !in_array($case, $excluded, true)
+        );
+
+        if ($isRequest) {
+            return array_map(
+                fn ($case) => $case->value,
+                $filtered
+            );
+        }
+
+        return array_values($filtered);
     }
 
     public static function getPermissionFor(RoleEnum $role): array
@@ -103,21 +117,18 @@ enum PermissionEnum: string
                 self::CREATE_CANDIDATES,
                 self::UPDATE_CANDIDATES,
                 self::DELETE_CANDIDATES,
-                self::VIEW_REGISTRATION_FIELDS,
-                self::CREATE_REGISTRATION_FIELDS,
-                self::UPDATE_REGISTRATION_FIELDS,
-                self::DELETE_REGISTRATION_FIELDS,
                 self::VIEW_VOTERS,
                 self::IMPORT_VOTERS,
                 self::UPDATE_VOTERS,
                 self::DELETE_VOTERS,
-                self::EXPORT_VOTERS,
+                //self::EXPORT_VOTERS,
                 self::VIEW_IMPORT_LOGS,
                 self::APPROVE_VOTERS,
                 self::REJECT_VOTERS,
                 self::VIEW_VOTES,
                 self::RESET_VOTES,
-                self::EXPORT_RESULTS,
+                self::RESTORE_VOTES,
+                //  self::EXPORT_RESULTS,
                 self::VIEW_ELECTION_SETTINGS,
                 self::UPDATE_ELECTION_SETTINGS,
                 self::VIEW_AUDIT_LOGS,
@@ -125,6 +136,4 @@ enum PermissionEnum: string
             default => [],
         };
     }
-
-
 }

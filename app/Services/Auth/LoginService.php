@@ -19,7 +19,7 @@ class LoginService implements LoginInterface
 
         if (! $user) {
             throw ValidationException::withMessages([
-                'email' => 'Invalid credentials.',
+                'email' => 'Invalid login.',
             ]);
         }
 
@@ -28,9 +28,11 @@ class LoginService implements LoginInterface
                 'email' => 'Account is inactive.',
             ]);
         }
+        $remember = $credentials['remember'] ?? false;
+        unset($credentials['remember']);
+        
+        if (! Auth::attempt($credentials, $remember)) {
 
-        if (! Auth::attempt($credentials))
-        {
             throw ValidationException::withMessages([
                 'email' => 'Invalid credentials.',
             ]);

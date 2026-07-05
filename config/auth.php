@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\Voter;
 
 return [
 
@@ -42,6 +43,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'voter' => [
+            'driver' => 'session',
+            'provider' => 'voters',
+        ],      
     ],
 
     /*
@@ -65,6 +70,10 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', User::class),
+        ],
+        'voters' => [
+            'driver' => 'eloquent',
+            'model' => Voter::class,
         ],
 
         // 'users' => [
@@ -96,8 +105,14 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
-            'expire' => 60,
-            'throttle' => 60,
+            'expire' => 20,
+            'throttle' => 3600,
+        ],
+        'voters' => [
+            'provider' => 'voters',
+            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'expire' => 20,
+            'throttle' => 3600,
         ],
     ],
 

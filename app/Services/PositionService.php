@@ -27,9 +27,7 @@ class PositionService implements PositionInterface
 
         $result = $this->canDelete($position);
 
-        if ($result['status']) {
-            return $result;
-        }
+        if ($result['status']) return $result;
 
         return (bool) $position->delete();
     }

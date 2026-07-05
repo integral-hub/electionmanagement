@@ -14,9 +14,16 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email'],
+            'email' => ['bail', 'required', 'email'],
             'password' => ['required', 'string'],
-           // 'remember' => ['nullable', 'boolean'],
+            'remember' => ['nullable', 'boolean'],
         ];
+    }
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'remember' => $this->boolean('remember'),
+
+        ]);
     }
 }

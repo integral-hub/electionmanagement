@@ -12,4 +12,5 @@ interface UserInterface
     public function update(User $user, array $data): User;
     public function revokeRole(User $user): array;
     public function delete(User $user): array;
+    public function updateProfile(User $user, array $data): User;
 }

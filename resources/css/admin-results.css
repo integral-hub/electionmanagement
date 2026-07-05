@@ -1,0 +1,88 @@
+/*
+ * Election results page styles.
+ * Extracted from resources/views/admin/results/show.blade.php.
+ */
+
+.results-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.results-header-sub { font-size: 13px; color: var(--ink-3); }
+
+.status-pill { font-size: 12px; padding: 4px 10px; border-radius: 6px; border: 1px solid currentColor; text-transform: capitalize; font-weight: 600; background: rgba(0,0,0,.02); }
+
+/* ── Turnout summary ── */
+.turnout-grid { display: grid; grid-template-columns: 180px 1fr; gap: 24px; align-items: center; margin-bottom: 20px; }
+@media(max-width: 640px) { .turnout-grid { grid-template-columns: 1fr; } }
+
+.turnout-donut-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.turnout-donut { width: 160px; height: 160px; border-radius: 50%; display: grid; place-items: center; background: conic-gradient(var(--accent) calc(var(--pct) * 1%), var(--surface) 0); }
+.turnout-donut-inner { width: 118px; height: 118px; border-radius: 50%; background: var(--surface-2); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.turnout-donut-value { font-size: 24px; font-weight: 700; color: var(--ink); line-height: 1; }
+.turnout-donut-label { font-size: 11px; color: var(--ink-3); margin-top: 2px; }
+
+.turnout-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+@media(max-width: 640px) { .turnout-stats { grid-template-columns: repeat(2, 1fr); } }
+.turnout-stat-label { font-size: 11px; color: var(--ink-3); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 4px; }
+.turnout-stat-value { font-size: 20px; font-weight: 700; color: var(--ink); }
+
+/* ── Ranking chart: candidates grouped by position, ranked by votes ── */
+.ranking-group { margin-bottom: 22px; }
+.ranking-group:last-child { margin-bottom: 0; }
+.ranking-group-title { display: flex; align-items: center; justify-content: space-between; font-size: 13px; font-weight: 600; color: var(--ink-2); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+.ranking-group-total { font-size: 12px; font-weight: 400; color: var(--ink-3); }
+
+.ranking-row { display: grid; grid-template-columns: 24px 120px 1fr 60px; align-items: center; gap: 10px; padding: 6px 0; }
+@media(max-width: 640px) { .ranking-row { grid-template-columns: 20px 90px 1fr 50px; } }
+.ranking-rank { font-size: 11px; font-weight: 700; color: var(--ink-3); }
+.ranking-rank.is-first { color: var(--accent); }
+.ranking-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ranking-bar-track { height: 18px; background: var(--surface); border-radius: 5px; overflow: hidden; }
+.ranking-bar-fill { height: 100%; border-radius: 5px; background: var(--accent); transition: width .4s ease; display: flex; align-items: center; }
+.ranking-bar-fill.is-first { background: #16a34a; }
+.ranking-votes { font-size: 12px; font-weight: 700; text-align: right; color: var(--ink-2); }
+
+/* ── Votes-by-candidate plot: one bar per candidate, grouped + labeled by position ── */
+.vote-plot-wrap { overflow-x: auto; display: flex; gap: 32px; padding: 4px 4px 10px; }
+.vote-plot-group { flex-shrink: 0; }
+.vote-plot-position-label { text-align: center; font-size: 12px; font-weight: 600; color: var(--ink-2); margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+
+.vote-plot-bars { display: flex; align-items: flex-end; gap: 10px; height: 160px; }
+.vote-plot-bar-col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; width: 44px; flex-shrink: 0; }
+.vote-plot-count { font-size: 11px; font-weight: 700; color: var(--ink-2); margin-bottom: 4px; }
+.vote-plot-bar { width: 28px; background: var(--accent); border-radius: 4px 4px 0 0; min-height: 2px; transition: background .12s; }
+.vote-plot-bar.is-empty { background: var(--border); }
+.vote-plot-bar.is-leading { background: #16a34a; }
+.vote-plot-bar-col:hover .vote-plot-bar { background: #4338ca; }
+.vote-plot-bar-col:hover .vote-plot-bar.is-leading { background: #15803d; }
+
+.vote-plot-candidate-labels { display: flex; gap: 10px; margin-top: 6px; }
+.vote-plot-candidate-label {
+    width: 44px; flex-shrink: 0;
+    font-size: 10.5px; color: var(--ink-3); text-align: center;
+    overflow: hidden; text-overflow: ellipsis;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    line-height: 1.2;
+}
+
+.vote-plot-empty { text-align: center; padding: 30px 0; color: var(--ink-3); font-size: 13px; }
+
+/* ── Position result cards ── */
+.result-card { margin-bottom: 20px; }
+.result-card-sub { font-size: 13px; color: var(--ink-3); }
+.result-candidate-count { font-size: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; color: var(--ink-3); }
+
+.candidate-list { display: flex; flex-direction: column; gap: 12px; }
+.candidate-row { display: flex; align-items: center; gap: 14px; }
+.candidate-rank { width: 28px; height: 28px; border-radius: 50%; background: var(--surface); display: grid; place-items: center; font-size: 12px; font-weight: 700; flex-shrink: 0; border: 1px solid var(--border); color: var(--ink-3); }
+.candidate-rank.is-leading { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+.candidate-photo { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; flex-shrink: 0; background: var(--surface); }
+.candidate-photo img { width: 100%; height: 100%; object-fit: cover; }
+.candidate-details { flex: 1; min-width: 0; }
+.candidate-details-top { display: flex; justify-content: space-between; margin-bottom: 4px; gap: 8px; }
+.candidate-name { font-size: 14px; font-weight: 600; }
+.candidate-tally { font-size: 13px; font-weight: 700; color: var(--ink-3); white-space: nowrap; }
+.candidate-tally-count { font-weight: 400; }
+.candidate-bar-track { height: 8px; background: var(--surface); border-radius: 10px; overflow: hidden; }
+.candidate-bar-fill { height: 100%; background: var(--accent); border-radius: 10px; transition: width .4s ease; }
+.candidate-status-wrap { margin-top: 6px; }
+.candidate-status { font-size: 11px; padding: 2px 8px; border-radius: 6px; border: 1px solid currentColor; text-transform: capitalize; font-weight: 600; background: rgba(0,0,0,.02); }
+
+.results-empty p { font-size: 13px; }

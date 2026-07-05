@@ -6,6 +6,13 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class EditRequest extends FormRequest
 {
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
     public function rules(): array
     {
         return [
@@ -17,7 +24,6 @@ class EditRequest extends FormRequest
             'fields.*.field_type' => ['sometimes', 'string', 'in:text,textarea,select,checkbox,radio,date,file'],
             'fields.*.required' => ['sometimes', 'boolean'],
             'fields.*.unique_field' => ['sometimes', 'boolean'],
-            'fields.*.is_hash' => ['sometimes', 'boolean'],
             'fields.*.options' => ['nullable', 'array'],
             'fields.*.sort_order' => ['nullable', 'integer'],
         ];

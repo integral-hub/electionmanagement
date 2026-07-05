@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Concerns\Traits\Auditable;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class ElectionVoter extends Model
+class ElectionVoter extends Pivot
 {
+    use Auditable;
+    
     protected $table = 'election_voters';
 
     protected $fillable = [
@@ -14,7 +17,6 @@ class ElectionVoter extends Model
         'status',
         'validated_by',
         'validated_at',
-        'batch_code',
     ];
 
     public function voter()
@@ -25,5 +27,9 @@ class ElectionVoter extends Model
     public function election()
     {
         return $this->belongsTo(Election::class);
+    }
+    public function validator()
+    {
+        return $this->belongsTo(User::class, 'validated_by');
     }
 }

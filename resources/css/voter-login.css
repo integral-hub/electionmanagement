@@ -1,0 +1,10 @@
+/*
+ * Voter login page styles.
+ * Shared auth header/footer classes (.auth-*) live in voter-layout.css.
+ */
+
+.login-password-wrap { position: relative; }
+.login-password-wrap .v-input { padding-right: 44px; }
+.login-password-toggle { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--ink-3); }
+
+.login-forgot-wrap { text-align: right; margin-top: 6px; }

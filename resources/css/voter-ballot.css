@@ -1,0 +1,48 @@
+/*
+ * Ballot page styles.
+ */
+
+.ballot-progress { margin-bottom: 24px; }
+.ballot-progress-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.ballot-progress-label { font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.ballot-progress-count { font-size: 13px; color: var(--ink-3); }
+.ballot-progress-track { height: 6px; background: var(--border); border-radius: 10px; overflow: hidden; }
+.ballot-progress-fill { height: 100%; background: var(--primary); border-radius: 10px; transition: width .3s ease; width: 0%; }
+
+.position-card { margin-bottom: 20px; transition: box-shadow .2s; }
+.position-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 12px; }
+.position-eyebrow { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--primary); margin-bottom: 3px; }
+.position-title { font-size: 18px; font-weight: 700; }
+.position-description { font-size: 13px; color: var(--ink-3); margin-top: 2px; }
+.position-check { width: 32px; height: 32px; border-radius: 50%; background: var(--border); display: grid; place-items: center; flex-shrink: 0; transition: background .2s; }
+.position-empty { font-size: 13px; color: var(--ink-3); text-align: center; padding: 16px 0; }
+
+.candidate-choices { display: flex; flex-direction: column; gap: 10px; }
+
+/* Candidate photo — enlarged (was 52px) so voters can clearly see who they're voting for */
+.candidate-card { display: flex; align-items: center; gap: 16px; padding: 16px; border: 2px solid var(--border); border-radius: 12px; cursor: pointer; transition: all .15s; user-select: none; }
+.candidate-card-radio { display: none; }
+.candidate-photo-lg { width: 84px; height: 84px; border-radius: 50%; overflow: hidden; flex-shrink: 0; background: var(--surface); border: 2px solid var(--border); }
+.candidate-photo-lg img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.candidate-photo-placeholder { width: 100%; height: 100%; display: grid; place-items: center; font-size: 26px; font-weight: 700; color: var(--ink-3); }
+
+.candidate-info { flex: 1; min-width: 0; }
+.candidate-info-name { font-size: 16px; font-weight: 600; margin-bottom: 2px; }
+.candidate-info-bio { font-size: 13px; color: var(--ink-3); }
+.candidate-info-manifesto { font-size: 12px; color: var(--primary); margin-top: 4px; font-style: italic; }
+
+.vote-indicator { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--border); flex-shrink: 0; display: grid; place-items: center; transition: all .15s; }
+.vote-indicator-dot { width: 11px; height: 11px; border-radius: 50%; background: transparent; transition: background .15s; }
+
+.candidate-card:has(input:checked) { border-color: var(--primary); background: var(--primary-light); }
+.candidate-card:has(input:checked) .vote-indicator { border-color: var(--primary); background: var(--primary); }
+.candidate-card:has(input:checked) .vote-indicator-dot { background: #fff; }
+.candidate-card:hover { border-color: #93c5fd; background: #f8fbff; }
+
+.ballot-empty-card { text-align: center; padding: 40px; }
+.ballot-empty-card p { color: var(--ink-3); }
+
+.ballot-submit-wrap { position: sticky; bottom: 16px; z-index: 10; }
+.ballot-submit-btn { box-shadow: 0 4px 20px rgba(37,99,235,.35); }
+
+.ballot-footnote { text-align: center; margin-top: 20px; font-size: 12px; color: var(--ink-3); }

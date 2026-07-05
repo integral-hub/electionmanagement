@@ -19,7 +19,9 @@ return new class extends Migration
             $table->foreignId('candidate_id')->constrained()->cascadeOnDelete();
             $table->foreignId('voter_id')->nullable()->constrained()->cascadeOnDelete();
             $table->boolean('is_valid')->default(true);
+            $table->uuid('reset_batch_id')->nullable()->index();
             $table->timestamps();
+            $table->softDeletes();
             $table->unique(['election_id', 'position_id', 'voter_id'], 'votes_election_position_voter_unique');
         });
     }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Election;
 
+use App\Enums\ElectionStatusEnum;
+use App\Models\Election;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -17,8 +19,7 @@ class CreateRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:300'],
-            'status' => ['nullable', Rule::in(['draft','scheduled','running','completed', 'cancelled']),
-            ],
+            'status' => ['nullable', Rule::in(ElectionStatusEnum::selected())],
         ];
     }
 }

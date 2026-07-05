@@ -17,10 +17,10 @@ return new class extends Migration
             $table->foreignId('election_id')->constrained()->cascadeOnDelete();
             $table->foreignId('position_id')->constrained()->cascadeOnDelete();
             $table->string('name');
-            $table->string('photo')->nullable(); // store path or URL
+            $table->json('photo')->nullable(); // store path or URL
             $table->text('bio')->nullable();
             $table->text('manifesto')->nullable();
-            $table->enum('status', ['pending','approved','rejected','withdrawn'])->default('approved');
+            $table->enum('status', ['active','withdrawn'])->default('active');
             $table->timestamps();
         });
     }

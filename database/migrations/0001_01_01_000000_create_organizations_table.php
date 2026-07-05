@@ -19,10 +19,11 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
-            $table->string('logo')->nullable();
+            $table->json('logo')->nullable();
             $table->string('website')->nullable();
             $table->string('package_type')->nullable();
             $table->boolean('active')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

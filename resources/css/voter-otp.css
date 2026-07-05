@@ -1,0 +1,35 @@
+/*
+ * Shared OTP entry page styles (voter/verify-email.blade.php + voter/2fa.blade.php).
+ */
+
+.otp-wrap { display: flex; gap: 10px; justify-content: center; margin: 20px 0; }
+.otp-wrap input {
+    width: 46px;
+    height: 56px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-family: inherit;
+    color: var(--ink);
+    background: #fff;
+    outline: none;
+    transition: border .14s;
+    -moz-appearance: textfield;
+}
+.otp-wrap input::-webkit-inner-spin-button,
+.otp-wrap input::-webkit-outer-spin-button { -webkit-appearance: none; }
+.otp-wrap input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+.otp-wrap input.filled { border-color: var(--primary); background: var(--primary-light); }
+
+.otp-resend-wrap { text-align: center; margin-top: 18px; }
+.otp-resend-btn { background: none; border: none; font-family: inherit; font-size: 13px; color: var(--primary); cursor: pointer; opacity: .5; }
+.otp-resend-countdown { font-size: 12px; color: var(--ink-3); margin-left: 4px; }
+
+.otp-note { margin-top: 16px; padding: 12px 14px; background: var(--surface); border-radius: 9px; border: 1px solid var(--border); }
+.otp-note-inner { display: flex; align-items: center; gap: 7px; }
+.otp-note-inner svg { flex-shrink: 0; color: var(--ink-3); }
+.otp-note-inner span { font-size: 12px; color: var(--ink-3); }
+
+.otp-back-wrap { text-align: center; margin-top: 14px; }

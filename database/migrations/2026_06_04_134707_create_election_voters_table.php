@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('election_id')->constrained()->cascadeOnDelete();
             $table->foreignId('voter_id')->constrained()->cascadeOnDelete();
-            $table->enum('status', ['pending','validated','rejected','banned'])->default('pending');
+            $table->enum('status', ['pending','validated','banned'])->default('pending');
             $table->foreignId('validated_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamp('validated_at')->nullable();
             $table->timestamps();

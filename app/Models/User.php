@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\Traits\Auditable;
 use App\Models\Concerns\Traits\HasFormattedName;
 use App\Models\Concerns\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -18,6 +20,9 @@ class User extends Authenticatable
     use HasRoles;
     use HasUuid;
     use HasFormattedName;
+    use Auditable;
+    use SoftDeletes;
+    
     protected $fillable = [
         'uuid',
         'name',
@@ -25,6 +30,7 @@ class User extends Authenticatable
         'password',
         'profile_photo_path',
         'organization_id',
+        'status'
     ];
 
     protected $hidden = [
@@ -34,7 +40,8 @@ class User extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed'
+        'password' => 'hashed',
+        'profile_photo_path' => 'array'
     ];
 
     public function organization()

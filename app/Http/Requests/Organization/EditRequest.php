@@ -20,12 +20,11 @@ class EditRequest extends FormRequest
                 'nullable',
                 'email',
                 Rule::unique('organizations', 'email')
-                    ->ignore($this->route('organization')),
+                    ->ignore($this->user()->organization_id),
             ],
             'phone' => ['nullable', 'string', 'max:20'],
             'website' => ['nullable', 'url'],
-            'logo' => ['nullable', 'image'],
-            'active' => ['boolean'],
+            'logo' => ['nullable', 'image', 'max:2048']
         ];
     }
 

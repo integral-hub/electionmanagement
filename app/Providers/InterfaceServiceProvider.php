@@ -11,6 +11,9 @@ use App\Services\Interfaces\{
     PositionInterface,
     CandidateInterface,
     RegistrationFieldInterface,
+    RoleInterface,
+    FileUploadInterface,
+    PortalChecklistInterface,
 };
 use App\Services\Auth\LoginService;
 use App\Services\{
@@ -20,8 +23,16 @@ use App\Services\{
     PositionService,
     CandidateService,
     RegistrationFieldService,
+    RoleService,
+    FileUploadService,
+    PortalChecklistService,
 };
-
+use App\Services\Auth\PasswordService;
+use App\Services\Auth\VoterAuthService;
+use App\Services\Auth\VoterEmailVerificationService;
+use App\Services\Interfaces\Auth\VoterEmailVerificationInterface;
+use App\Services\Interfaces\Auth\PasswordInterface;
+use App\Services\Interfaces\Auth\VoterAuthInterface;
 
 class InterfaceServiceProvider extends ServiceProvider
 {
@@ -38,6 +49,12 @@ class InterfaceServiceProvider extends ServiceProvider
         PositionInterface::class => PositionService::class,
         CandidateInterface::class => CandidateService::class,
         RegistrationFieldInterface::class => RegistrationFieldService::class,
+        RoleInterface::class => RoleService::class,
+        FileUploadInterface::class => FileUploadService::class,
+        PasswordInterface::class => PasswordService::class,
+        VoterAuthInterface::class => VoterAuthService::class,
+        VoterEmailVerificationInterface::class => VoterEmailVerificationService::class,
+        PortalChecklistInterface::class => PortalChecklistService::class,
     ];
 
     /**

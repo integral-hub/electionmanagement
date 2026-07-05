@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
+use Cloudinary\Cloudinary;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
-use Spatie\Activitylog\Models\Activity;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +13,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(Cloudinary::class, function () {
+            return new Cloudinary(
+                config('cloudinary.url')
+            );
+        });
     }
 
     /**
@@ -21,10 +25,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-       /* Activity::creating(function ($activity) {
-            if (Auth::check() && Auth::user()?->organization_id) {
-                $activity->organization_id = Auth::user()->organization_id;
-            }
-        }); */
+
     }
 }

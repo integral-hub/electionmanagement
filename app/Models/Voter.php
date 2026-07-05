@@ -2,15 +2,19 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\Traits\Auditable;
 use App\Models\Concerns\Traits\HasFormattedName;
 use App\Models\Concerns\Traits\HasUuid;
-use Illuminate\Database\Eloquent\Model;
+//use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
-class Voter extends Model
+class Voter extends Authenticatable
 {
-    use HasFactory, HasUuid, HasFormattedName, Notifiable;
+    use HasFactory, HasUuid, HasFormattedName, Notifiable, Auditable, SoftDeletes;
 
     protected $fillable = [
         'uuid',
@@ -30,6 +34,7 @@ class Voter extends Model
         'is_verified_email' => 'boolean',
         'is_verified_phone' => 'boolean',
         'last_login_at' => 'datetime',
+        'password' => 'hashed'
     ];
 
     /**
@@ -37,10 +42,27 @@ class Voter extends Model
      */
     protected $hidden = [
         'password',
+        'remember_token',
     ];
+    
+    public function voteStatus(Election $election): ?string
+    {
+        $vote = $election->votes()
+            ->where('voter_id', $this->id)
+            ->first();
+
+        if (!$vote) {
+            return null; // Nil
+        }
+
+        return !$vote->is_valid ? 'revoked' : 'voted';
+    }
+    public function hasVote(Election $election): bool
+    {
+        return ! is_null($this->voteStatus($election));
+    }
 
     // Relationships
-
     public function organization()
     {
         return $this->belongsTo(Organization::class);
@@ -48,14 +70,10 @@ class Voter extends Model
 
     public function elections()
     {
-        return $this->hasManyThrough(
-                Election::class,
-                ElectionVoter::class,
-                    'voter_id',   
-                    'id',          
-                    'id',          
-                    'election_id' 
-        );
+        return $this->belongsToMany
+                    (Election::class,'election_voters','voter_id','election_id')
+                      ->withTimestamps()
+                      ->withPivot('status', 'validated_by', 'validated_at');
     }
 
     public function votes()
@@ -66,5 +84,12 @@ class Voter extends Model
     {
         return $this->hasMany(VoterUniqueData::class);
     }
+    public function getUniqueValue($key)
+    {
+        return $this->uniqueData
+            ->firstWhere('field_name', $key)
+            ?->value;
+    }
+
 
 }

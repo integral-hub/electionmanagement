@@ -25,9 +25,8 @@ class RegistrationFieldService implements RegistrationFieldInterface
     {
 
         $result = $this->canDelete($registrationField);
-        if ($result['status']) {
-            return $result;
-        }
+        
+        if ($result['status']) return $result;
 
         $registrationField->delete();
         return [

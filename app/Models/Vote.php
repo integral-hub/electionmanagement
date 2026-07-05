@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\Traits\Auditable;
+use App\Models\Concerns\Traits\HasUuid;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Vote extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuid, Auditable, SoftDeletes;
 
     protected $fillable = [
         'election_id',
@@ -36,5 +40,9 @@ class Vote extends Model
     public function voter()
     {
         return $this->belongsTo(Voter::class);
+    }
+    public function scopeValid(Builder $query): Builder
+    {
+        return $query->where('is_valid', true);
     }
 }

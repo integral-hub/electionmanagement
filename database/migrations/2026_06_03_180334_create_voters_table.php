@@ -19,10 +19,12 @@ return new class extends Migration
             $table->string('batch_code')->nullable();
             $table->string('phone')->nullable()->unique();
             $table->string('email')->unique();
-            $table->string('password')->nullable();
+            $table->string('password');
+            $table->rememberToken();
             $table->boolean('is_verified_email')->default(false);
             $table->boolean('is_verified_phone')->default(false);
             $table->timestamp('last_login_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

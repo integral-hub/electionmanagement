@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Services\Interfaces\RoleInterface;
-use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Role;
 
 class RoleService implements RoleInterface
 {
@@ -14,6 +15,8 @@ class RoleService implements RoleInterface
         $permissions = $data['permissions'] ?? [];
 
         unset($data['permissions']);
+
+        $data['organization_id'] = global_data('org_id');
 
         $role = Role::query()->create($data);
 
@@ -43,9 +46,7 @@ class RoleService implements RoleInterface
     {
         $result = $this->canDelete($role);
 
-        if ($result['status']) {
-            return $result;
-        }
+        if ($result['status']) return $result;
 
         $role->syncPermissions([]);
 
@@ -67,5 +68,19 @@ class RoleService implements RoleInterface
                 ? 'Role cannot be deleted because it has assigned users.'
                 : null,
         ];
+    }
+    public function getRoles($index = false)
+    {
+        $query = Role::query()
+                    ->where('guard_name', 'web')
+                    ->where('organization_id', global_data('org_id'))
+                    ->where('name', '!=', 'administrator');
+
+
+        if ($index) {
+            return $query->with('permissions')->paginate(15);
+        }
+
+        return $query->get();
     }
 }

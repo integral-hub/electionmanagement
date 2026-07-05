@@ -23,7 +23,7 @@ class LoginController extends Controller
         $this->service->login($request->validated());
 
         return redirect()->intended(
-            route('dashboard')
+            route('admin.dashboard')
         );
     }
 

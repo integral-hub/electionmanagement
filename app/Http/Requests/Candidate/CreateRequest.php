@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Candidate;
 
+use App\Enums\CandidateStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -20,7 +21,7 @@ class CreateRequest extends FormRequest
             'photo' => ['nullable', 'image', 'max:2048'],
             'bio' => ['nullable', 'string', 'max:255'],
             'manifesto' => ['nullable', 'string', 'max:255'],
-            'status' => ['nullable', Rule::in(['pending', 'approved', 'rejected','withdrawn'])]
+            'status' => ['nullable', Rule::in(CandidateStatusEnum::values())],
         ];
     }
 }

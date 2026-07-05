@@ -5,6 +5,7 @@ namespace App\Http\Requests\Voter;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use App\Traits\RFValidator;
+use Illuminate\Validation\Rules\Password;
 
 class CreateRequest extends FormRequest
 {
@@ -18,9 +19,9 @@ class CreateRequest extends FormRequest
     public function rules(): array
     {
         $baseRules = [
-            'email' => ['nullable', 'email', Rule::unique('voters', 'email')],
+            'email' => ['required', 'email:rfc', Rule::unique('voters', 'email')],
             'phone' => ['nullable', 'string', 'max:20', Rule::unique('voters', 'phone')],
-            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8', 'confirmed', Password::min(8)->letters()->mixedCase()->numbers()],
         ];
 
         $election = $this->route('election');
@@ -34,4 +35,5 @@ class CreateRequest extends FormRequest
             $this->rf($election)
         );
     }
+    
 }

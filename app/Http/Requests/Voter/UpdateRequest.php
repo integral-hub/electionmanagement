@@ -15,8 +15,7 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone' => ['nullable', Rule::unique('voters', 'phone')->ignore($this->route('voter'))],
-            'password' => ['nullable', 'string', 'min:8']
+            'phone' => ['nullable', Rule::unique('voters', 'phone')->ignore(auth('voter')->id())],
         ];
     }
 }

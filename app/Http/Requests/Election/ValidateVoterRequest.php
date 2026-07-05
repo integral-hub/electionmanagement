@@ -2,35 +2,20 @@
 
 namespace App\Http\Requests\Election;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ValidateVoterRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        return false;
+        return true; 
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     */
     public function rules(): array
     {
         return [
-
-            'status' => [
-                'required',
-                Rule::in([
-                    'validated',
-                    'rejected',
-                    'banned',
-                ]),
-            ],
+            'status' => ['required', Rule::in(['validated', 'banned', 'pending'])],
         ];
-    
     }
 }

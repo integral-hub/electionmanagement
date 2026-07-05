@@ -13,26 +13,31 @@ class VoterCreated extends Notification
     use Queueable;
 
     public function __construct(
-        public Election $election
+        public readonly Election $election,
+        public readonly ?string $password = null, // optional password
     ) {}
 
-    public function via($notifiable): array
+    public function via(object $notifiable): array
     {
-        return ['mail']; // can add sms later
+        return ['mail'];
     }
 
     public function toMail(Voter $notifiable): MailMessage
     {
-        $token = encrypt([
-            'voter_id' => $notifiable->id,
-            'election_id' => $this->election->id,
-        ]);
+        $mail = (new MailMessage)
+            ->subject('Registration confirmed — ' . $this->election->name)
+            ->greeting('Hello ' . ($notifiable->voter_data['full_name'] ?? ''))
+            ->line('Your registration for **' . $this->election->name . '** has been received.')
+            ->line('Check your inbox for a separate email with your verification code.');
 
-        $link = url("/voter/verify/{$token}");
+        // 👇 Only include password if it exists
+        if ($this->password) {
+            $mail->line('')
+                ->line('Your temporary password is:')
+                ->line('**' . $this->password . '**')
+                ->line('Please change it after login.');
+        }
 
-        return (new MailMessage)
-            ->subject('Email Verification')
-            ->line('Please verify your voter account to continue.')
-            ->action('Verify Account', $link);
+        return $mail->salutation('— ' . config('app.name'));
     }
 }

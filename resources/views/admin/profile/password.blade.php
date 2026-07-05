@@ -1,0 +1,21 @@
+@extends('layouts.admin')
+@section('page-title','Change Password')
+@section('topbar-actions')<a href="{{ route('admin.profile.show') }}" class="btn btn-s btn-sm">← Profile</a>@endsection
+@section('content')
+<div style="max-width:460px"><div class="card">
+<div style="margin-bottom:20px"><h2 style="font-size:16px;font-weight:700">Change Password</h2><p style="font-size:12.5px;color:var(--ink3);margin-top:3px">Confirm your current password, then set a new one.</p></div>
+<form action="{{ route('admin.profile.password.update') }}" method="POST" class="fs">
+@csrf @method('PUT')
+<div class="fg"><label class="fl">Current Password *</label><div style="position:relative"><input type="password" id="cp" name="current_password" class="fi {{ $errors->has('current_password')?'err':'' }}" placeholder="Your current password" required autocomplete="current-password" style="padding-right:40px"><button type="button" onclick="tp('cp')" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--ink3)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16" height="16"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button></div>@error('current_password')<span class="fe">{{ $message }}</span>@enderror</div>
+<div class="fg"><label class="fl">New Password *</label><div style="position:relative"><input type="password" id="np" name="password" class="fi {{ $errors->has('password')?'err':'' }}" placeholder="Min. 8 chars, upper, lower &amp; number" required autocomplete="new-password" oninput="chk(this.value)" style="padding-right:40px"><button type="button" onclick="tp('np')" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--ink3)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16" height="16"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button></div>
+<div style="height:4px;border-radius:4px;background:var(--bdr);overflow:hidden;margin-top:5px"><div id="sf" style="height:100%;border-radius:4px;transition:width .3s,background .3s;width:0%"></div></div>
+<span class="fh" id="sl"></span>@error('password')<span class="fe">{{ $message }}</span>@enderror</div>
+<div class="fg"><label class="fl">Confirm New Password *</label><div style="position:relative"><input type="password" id="cp2" name="password_confirmation" class="fi" placeholder="Repeat new password" required autocomplete="new-password" style="padding-right:40px"><button type="button" onclick="tp('cp2')" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--ink3)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16" height="16"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button></div></div>
+<div class="alert a-info" style="margin:0 0 14px"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="14" height="14"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>You will remain logged in after changing your password.</div>
+<div style="display:flex;gap:9px"><button type="submit" class="btn btn-p">Update Password</button><a href="{{ route('admin.profile.show') }}" class="btn btn-s">Cancel</a></div>
+</form></div></div>
+<script>
+function tp(id){const e=document.getElementById(id);e.type=e.type==='password'?'text':'password'}
+function chk(v){const f=document.getElementById('sf'),l=document.getElementById('sl');let s=0;if(v.length>=8)s++;if(/[A-Z]/.test(v))s++;if(/[0-9]/.test(v))s++;if(/[^A-Za-z0-9]/.test(v))s++;const m={0:['0%','#e2e8f0',''],1:['25%','#dc2626','Weak'],2:['50%','#d97706','Fair'],3:['75%','#2563eb','Good'],4:['100%','#059669','Strong']};f.style.width=m[s][0];f.style.background=m[s][1];l.textContent=m[s][2]}
+</script>
+@endsection
