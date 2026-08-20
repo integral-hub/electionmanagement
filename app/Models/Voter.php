@@ -17,7 +17,6 @@ class Voter extends Authenticatable
     use HasFactory, HasUuid, HasFormattedName, Notifiable, Auditable, SoftDeletes;
 
     protected $fillable = [
-        'uuid',
         'organization_id',
         'voter_data',
         'batch_code',

@@ -12,7 +12,6 @@ class RegistrationField extends Model
     use HasFactory, HasUuid, SoftDeletes;
 
     protected $fillable = [
-        'uuid',
         'election_id',
         'fields',
         'active',

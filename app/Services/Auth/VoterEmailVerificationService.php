@@ -52,12 +52,8 @@ class VoterEmailVerificationService implements VoterEmailVerificationInterface
 
         // OTP verification 
         if ($voterId && $code) {
-            $valid = Otp::match(
-                $code,
-                "email-otp-verification:{$election->uuid}:{$voterId}"
-            );
 
-            if (! $valid) {
+            if (! $this->matchOtp($election, $voterId, $code)) {
                 return false;
             }
 
@@ -88,6 +84,14 @@ class VoterEmailVerificationService implements VoterEmailVerificationInterface
         }
 
         return false;
+    }
+
+    public function matchOtp(Election $election, string $voterId, string $code): bool
+    {
+        return Otp::match(
+            $code,
+            "email-otp-verification:{$election->uuid}:{$voterId}"
+        );
     }
 
 

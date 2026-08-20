@@ -6,12 +6,16 @@ namespace App\Services\Auth;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use App\Services\Interfaces\Auth\LoginInterface;
 
 class LoginService implements LoginInterface
 {
-    public function login(array $credentials): User
+    /**
+     * Validate credentials and return the user
+     */
+    public function resolveUser(array $credentials): User
     {
         $user = User::query()
             ->where('email', $credentials['email'])
@@ -28,15 +32,21 @@ class LoginService implements LoginInterface
                 'email' => 'Account is inactive.',
             ]);
         }
-        $remember = $credentials['remember'] ?? false;
-        unset($credentials['remember']);
-        
-        if (! Auth::attempt($credentials, $remember)) {
 
+        if (! Hash::check($credentials['password'], $user->password)) {
             throw ValidationException::withMessages([
                 'email' => 'Invalid credentials.',
             ]);
         }
+
+        return $user;
+    }
+
+    public function login(array $credentials): User
+    {
+        $user = $this->resolveUser($credentials);
+
+        Auth::login($user, $credentials['remember'] ?? false);
 
         request()->session()->regenerate();
 

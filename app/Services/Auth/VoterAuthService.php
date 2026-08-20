@@ -51,7 +51,7 @@ class VoterAuthService implements VoterAuthInterface
         request()->session()->regenerateToken();
     }
 
-    private function checkPassword(Voter $voter, array $credentials): void
+    public function checkPassword(Voter $voter, array $credentials): void
     {
         // Only check if the caller included a 'password' key
         if (! array_key_exists('password', $credentials)) {

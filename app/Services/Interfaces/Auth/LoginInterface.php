@@ -9,6 +9,8 @@ use App\Models\User;
 interface LoginInterface
 {
     public function login(array $credentials): User;
-    
+
+    public function resolveUser(array $credentials): User;
+
     public function logout(): void;
 }

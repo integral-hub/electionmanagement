@@ -15,7 +15,6 @@ class Election extends Model
     use HasFactory, HasUuid, HasFormattedName, HasSlug, Auditable, VoteEligibility;
 
     protected $fillable = [
-        'uuid',
         'organization_id',
         'name',
         'slug',

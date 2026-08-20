@@ -69,9 +69,9 @@ class AppServiceProvider extends ServiceProvider
 
         // Voting (prevent rapid duplicate submissions)
         RateLimiter::for('vote', function (Request $request) {
-            return Limit::perMinute(2)->by(
-                Auth::guard('voter')->id() ?? $request->ip()
-            );
+            $voterId = Auth::guard('voter')->id() ?? $request->user()?->id();
+
+            return Limit::perMinute(2)->by($voterId ?? $request->ip());
         });
     }
 }

@@ -15,7 +15,6 @@ class Candidate extends Model
     use HasFactory, HasUuid, HasFormattedName, Auditable;
 
     protected $fillable = [
-        'uuid',
         'election_id',
         'position_id',
         'name',

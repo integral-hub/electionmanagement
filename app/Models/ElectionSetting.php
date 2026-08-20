@@ -12,7 +12,6 @@ class ElectionSetting extends Model
     use HasFactory, HasUuid, Auditable;
 
     protected $fillable = [
-        'uuid',
         'election_id',
         'registration_mode',
         'voters_verification_requirement', //{"email": true, "phone": false,"image_compare": false}

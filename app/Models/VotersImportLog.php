@@ -12,7 +12,6 @@ class VotersImportLog extends Model
     use HasFactory, HasUuid, Auditable;
 
     protected $fillable = [
-        'uuid',
         'election_id',
         'file_name',
         'total_records',

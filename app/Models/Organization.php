@@ -15,7 +15,6 @@ class Organization extends Model
     use SoftDeletes, HasFactory, HasUuid, HasFormattedName, HasSlug, Auditable;
 
     protected $fillable = [
-        'uuid',
         'name',
         'slug',
         'email',
